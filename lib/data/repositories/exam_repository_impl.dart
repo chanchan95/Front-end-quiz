@@ -83,4 +83,9 @@ class ExamRepositoryImpl implements ExamRepository {
   Future<List<Profile>> getUserProfiles(String keyWord, String choice) async{
     return await remoteData.getUsers(keyWord, choice);
   }
+
+  @override
+  Future<Map<String, dynamic>> getAdminStatistics() async {
+    return await remoteData.getAdminStatistics();
+  }
 }

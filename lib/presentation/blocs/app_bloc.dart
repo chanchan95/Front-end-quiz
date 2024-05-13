@@ -7,3 +7,4 @@ export 'exam_detail_bloc/exam_detail_bloc.dart';
 export 'cubits/answers_cubit.dart';
 export 'cubits/timer_cubit.dart';
 export 'cubits/exam_cubit.dart';
+export 'statistics_bloc/statistics_bloc.dart';

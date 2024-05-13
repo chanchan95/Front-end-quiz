@@ -20,4 +20,5 @@ abstract class ExamRepository {
   Future<Map<String, dynamic>> getExamResult(String id);
   Future<List<Profile>> getUserProfiles(String keyWord, String choice);
   Future<Profile> createProfile(Profile profile);
+  Future<Map<String, dynamic>> getAdminStatistics();
 }

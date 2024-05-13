@@ -21,8 +21,8 @@ void main() async {
   await dotenv.load(fileName: 'dotenv');
 
   // debug
-  Bloc observer_bloc = DependencyInjection.sl<ExamDetailBloc>();
-  Bloc.observer = AppBlocObserver();
+  // Bloc observer_bloc = DependencyInjection.sl<ExamDetailBloc>();
+  // Bloc.observer = AppBlocObserver();
 
   FlutterNativeSplash.remove();
   
@@ -37,6 +37,7 @@ void main() async {
         BlocProvider<ExamDetailBloc>(create: (context) => DependencyInjection.sl<ExamDetailBloc>()),
         BlocProvider<ResultBloc>(create: (context) => DependencyInjection.sl<ResultBloc>()),
         BlocProvider<ResultDetailBloc>(create: (context) => DependencyInjection.sl<ResultDetailBloc>()),
+        BlocProvider<StatisticsBloc>(create: (context) => DependencyInjection.sl<StatisticsBloc>()),
         BlocProvider<AnswersCubit>(create: (context) => DependencyInjection.sl<AnswersCubit>()),
         BlocProvider<TimerCubit>(create: (context) => DependencyInjection.sl<TimerCubit>()),
         BlocProvider<CourseCubit>(create: (context) => DependencyInjection.sl<CourseCubit>()),

@@ -111,6 +111,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onValidate(
       AuthValidateEvent event, Emitter<AuthState> emit) async {
+    emit(const AuthStateUnauthenticated());
+    return;
     emit(const AuthStateLoading());
     try {
       await _validate();

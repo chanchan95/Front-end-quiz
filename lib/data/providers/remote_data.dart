@@ -44,6 +44,7 @@ abstract class RemoteData {
   Future<Map<String, dynamic>> submitExam(String id, List<Question> answers);
   Future<List<Map<String, dynamic>>> getExamResults();
   Future<Map<String, dynamic>> getExamResult(String id);
+  Future<Map<String, dynamic>> getAdminStatistics();
 
   // Admin Exam
 }
@@ -482,4 +483,18 @@ class RemoteDataImpl implements RemoteData {
   }
 
 
+  @override
+  Future<Map<String, dynamic>> getAdminStatistics() async {
+    final response = await dio.get("/api/v1/admin/dashboard");
+    switch (response.statusCode) {
+      case 200:
+        return response.data;
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
 }

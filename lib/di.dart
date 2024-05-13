@@ -22,6 +22,7 @@ import 'package:ptit_quiz_frontend/presentation/blocs/user_profile_bloc/user_pro
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/dio/dio_tools.dart';
+import 'domain/usecases/get_admin_statistics.dart';
 import 'domain/usecases/validate.dart';
 import 'domain/usecases/validate_admin.dart';
 import 'presentation/blocs/app_bloc.dart';
@@ -137,8 +138,11 @@ class DependencyInjection {
     sl.registerFactory<ListQuestionCubit>(
       () => ListQuestionCubit(),
     );
+    sl.registerFactory<StatisticsBloc>(
+      () => StatisticsBloc(getAdminStatistics: sl()),
+    );
+
     // use case
-    
     sl.registerLazySingleton<Login>(() => Login(authRepository: sl()));
     sl.registerLazySingleton<Logout>(() => Logout(authRepository: sl()));
     sl.registerLazySingleton<Register>(() => Register(authRepository: sl()));
@@ -162,6 +166,7 @@ class DependencyInjection {
     sl.registerLazySingleton<DeleteExam>(() => DeleteExam(examRepository: sl()));
     sl.registerLazySingleton<getUsersProfiles>(() => getUsersProfiles(examRepository: sl()));
     sl.registerLazySingleton<CreateUser>(() => CreateUser(examRepository: sl()));
+    sl.registerLazySingleton<GetAdminStatistics>(() => GetAdminStatistics(examRepository: sl()));
 
     // repository
     sl.registerLazySingleton<AuthRepository>(
