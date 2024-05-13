@@ -16,6 +16,7 @@ import 'package:ptit_quiz_frontend/domain/usecases/reset_password.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/submit_exam.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/course_cubit.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_courses_cubit.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_question.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/user_profile_cubit.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/user_profile_bloc/user_profile_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -131,6 +132,10 @@ class DependencyInjection {
 
     sl.registerFactory<UserProfileCubit>(
       () => UserProfileCubit(),
+    );
+
+    sl.registerFactory<ListQuestionCubit>(
+      () => ListQuestionCubit(),
     );
     // use case
     

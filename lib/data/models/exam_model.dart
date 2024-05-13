@@ -52,17 +52,17 @@ class ExamModel extends Exam {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
-      'title': title,
-      'description': description,
-      'type': type,
-      'totalPoint': totalPoint,
-      'timeStart': timeStart,
-      'timeFinish': timeFinish,
-      'course_id': courseId,
-      'status': status,
-      'questions':
-          QuestionModel.toJsonList(QuestionModel.fromEntityList(questions)),
+
+    'record' :{
+          'title': title,
+          'description': description,
+          'type': type,
+          'totalPoint': totalPoint,
+          'course_id': courseId,
+          'status': status,
+          },
+
+    'questions': QuestionModel.toJsonList(QuestionModel.fromEntityList(questions)),
     };
   }
 //  [
@@ -83,10 +83,11 @@ class ExamModel extends Exam {
       description: exam.description,
       type: exam.type,
       totalPoint: exam.totalPoint,
-      timeStart: exam.timeStart,
-      timeFinish: exam.timeFinish,
+      timeStart: exam.timeStart ?? null,
+      timeFinish: exam.timeFinish ?? null,
       courseId: exam.courseId,
       status: exam.status,
+      
     );
   }
 }

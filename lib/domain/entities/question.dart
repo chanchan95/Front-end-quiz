@@ -4,6 +4,7 @@ class Question {
   final List<String> answers;
   final int? correctAnswer;
   final int? userAnswer;
+  final String? explaination;
 
   Question({
     required this.id,
@@ -11,14 +12,17 @@ class Question {
     required this.answers,
     this.correctAnswer,
     this.userAnswer,
+    this.explaination,
   });
+ 
 
-  const Question.empty()
+   Question.empty()
       : id = '',
         content = '',
-        answers = const [],
+        answers = List.empty(),
         correctAnswer = 0,
-        userAnswer = 0;
+        userAnswer = 0,
+        explaination = '';
 
   Question copyWith({
     String? id,
@@ -26,6 +30,7 @@ class Question {
     List<String>? answers,
     int? correctAnswer,
     int? userAnswer,
+    String? explaination,
   }) {
     return Question(
       id: id ?? this.id,
@@ -33,6 +38,7 @@ class Question {
       answers: answers ?? this.answers,
       correctAnswer: correctAnswer ?? this.correctAnswer,
       userAnswer: userAnswer ?? this.userAnswer,
+      explaination: explaination ?? this.explaination,
     );
   }
 }

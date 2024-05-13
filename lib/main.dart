@@ -7,6 +7,7 @@ import 'package:ptit_quiz_frontend/core/constants/bloc_observer/bloc_observer.da
 import 'package:ptit_quiz_frontend/core/theme/color_schemes.g.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/course_cubit.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_courses_cubit.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_question.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/user_profile_cubit.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/user_profile_bloc/user_profile_bloc.dart';
 
@@ -42,6 +43,7 @@ void main() async {
         BlocProvider<ListCourseCubit>(create: (context) => DependencyInjection.sl<ListCourseCubit>()),
         BlocProvider<ExamCubit>(create: (context) => DependencyInjection.sl<ExamCubit>()),
         BlocProvider<UserProfileCubit>(create: (context) => DependencyInjection.sl<UserProfileCubit>()),
+        BlocProvider<ListQuestionCubit>(create: (context) => DependencyInjection.sl<ListQuestionCubit>()),
       ],
       child: const MyApp(),
     )

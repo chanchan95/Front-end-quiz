@@ -123,7 +123,7 @@ class RemoteDataImpl implements RemoteData {
 
   @override
   Future<Map<String, dynamic>> validate() async {
-    final response = await dio.get("/api/v1/users/validate");
+    final response = await dio.get("/api/v1/users/val");
     switch (response.statusCode) {
       case 200:
         return {"id": response.data["_id"]};
@@ -480,4 +480,6 @@ class RemoteDataImpl implements RemoteData {
         );
     }
   }
+
+
 }

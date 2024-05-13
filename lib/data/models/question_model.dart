@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../domain/entities/question.dart';
 
 class QuestionModel extends Question {
@@ -7,6 +9,7 @@ class QuestionModel extends Question {
     required super.answers,
     super.correctAnswer,
     super.userAnswer,
+    super.explaination,
   });
 
   factory QuestionModel.fromEntity(Question question) {
@@ -16,6 +19,7 @@ class QuestionModel extends Question {
       answers: question.answers,
       correctAnswer: question.correctAnswer,
       userAnswer: question.userAnswer,
+      explaination: question.explaination,
     );
   }
 
@@ -43,16 +47,28 @@ class QuestionModel extends Question {
     };
   }
 
-  static List<Map<String, dynamic>> fromListQuestionToJson(List<QuestionModel> questions) {
-    return questions.map((question) => {
-      'question_id': question.id,
-      'user_option': question.userAnswer,
-    }).toList();
+  Map<String, dynamic> toJsonCreate() {
+    return {
+      'description': content,
+      'options': answers,
+      'rightOption': correctAnswer,
+      'explaination': explaination,
+    };
+  }
+
+  static List<Map<String, dynamic>> fromListQuestionToJson(
+      List<QuestionModel> questions) {
+    return questions
+        .map((question) => {
+              'question_id': question.id,
+              'user_option': question.userAnswer,
+            })
+        .toList();
   }
 
   static List<Map<String, dynamic>>? toJsonList(
       List<QuestionModel>? questions) {
-    return questions?.map((question) => question.toJson()).toList();
+    return questions?.map((question) => question.toJsonCreate()).toList();
   }
 
   static List<Question> toEntityList(List<QuestionModel> questions) {

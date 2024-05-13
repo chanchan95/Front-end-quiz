@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
+import 'package:ptit_quiz_frontend/domain/entities/question.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_question.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/exam_bloc/exam_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_dialog.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/widgets.dart';
@@ -96,8 +98,30 @@ class _ExamScreenState extends State<ExamScreen> {
                                             .read<ExamCubit>()
                                             .setExam(const Exam.empty());
                                         AppDialog.showManageExamDialog(
-                                            context, () {});
-                                        print('Add course button pressed');
+                                          context,
+                                          () {
+                                            Exam thisexam =
+                                                context.read<ExamCubit>().state;
+                                            List<Question> questions = context.read<ListQuestionCubit>().state;
+
+                                            if (thisexam.title.isEmpty) {
+                                              toastification.show(
+                                                context: context,
+                                                type: ToastificationType.error,
+                                                style: ToastificationStyle.flatColored,
+                                                title: const Text('Error'),
+                                                description: const Text('Title is required'),
+                                                alignment: Alignment.topRight,
+                                                autoCloseDuration: const Duration(seconds: 3),
+                                                showProgressBar: false,
+                                              );
+                                              return;
+                                            }
+
+
+                                          },
+                                        );
+                                        print('Add exam button pressed');
                                       },
                                     ),
                                     const SizedBox(width: 16),

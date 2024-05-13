@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptit_quiz_frontend/domain/entities/course.dart';
+import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
 import 'package:ptit_quiz_frontend/domain/entities/question.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_courses_cubit.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_question.dart';
 
 import '../../../core/utils/datetime_picker.dart';
 import '../../blocs/cubits/exam_cubit.dart';
@@ -41,6 +43,12 @@ class _ManageExamDialogState extends State<ManageExamDialog> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ListQuestionCubit>().clearQuestions();
   }
 }
 
@@ -142,6 +150,22 @@ class _ExamDetailsTabState extends State<ExamDetailsTab> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              child: const Text('Save Exam'),
+              onPressed: () {
+                Exam thisExam = Exam(
+                  id: '',
+                  title: _nameController.text,
+                  description: _descriptionController.text,
+                  totalPoint: int.parse(_totalMarksController.text),
+                  type: _typeController.text,
+                  status: _statusController.text,
+                  courseId: _idCourseController.text,
+                  // questions: context.read<ListQuestionCubit>().state,
+                );
+              },
+            )
           ],
         ),
       ),
@@ -257,60 +281,84 @@ class QuestionDetailCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          children: [
-            Text('Question'),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _questionController,
-                decoration: const InputDecoration(hintText: 'Question'),
+        child: Stack(children: [
+          Column(
+            children: [
+              Text('Question'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _questionController,
+                  decoration: const InputDecoration(hintText: 'Question'),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _option0Controller,
-                decoration: const InputDecoration(hintText: 'Option 1'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _option0Controller,
+                  decoration: const InputDecoration(hintText: 'Option 1'),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _option1Controller,
-                decoration: const InputDecoration(hintText: 'Option 2'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _option1Controller,
+                  decoration: const InputDecoration(hintText: 'Option 2'),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _option2Controller,
-                decoration: const InputDecoration(hintText: 'Option 3'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _option2Controller,
+                  decoration: const InputDecoration(hintText: 'Option 3'),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _option3Controller,
-                decoration: const InputDecoration(hintText: 'Option 4'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _option3Controller,
+                  decoration: const InputDecoration(hintText: 'Option 4'),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _rightOptionController,
-                decoration: const InputDecoration(hintText: 'Right Option'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _rightOptionController,
+                  decoration: const InputDecoration(hintText: 'Right Option'),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 45, // Adjust the height value as desired
-              child: TextField(
-                controller: _explainController,
-                decoration: const InputDecoration(hintText: 'Explain'),
+              SizedBox(
+                height: 45, // Adjust the height value as desired
+                child: TextField(
+                  controller: _explainController,
+                  decoration: const InputDecoration(hintText: 'Explain'),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          ElevatedButton.icon(
+            label: Text('Done'),
+            icon: Icon(Icons.verified),
+            onPressed: () {
+              Question thisQuestion = Question(
+                id: '',
+                content: _questionController.text,
+                answers: [
+                  _option0Controller.text,
+                  _option1Controller.text,
+                  _option2Controller.text,
+                  _option3Controller.text,
+                ],
+                correctAnswer: int.parse(_rightOptionController.text),
+                explaination: _explainController.text,
+              );
+              // print(thisQuestion.answers);
+              context.read<ListQuestionCubit>().addQuestion(
+                    thisQuestion,
+                  );
+            },
+          ),
+        ]),
       ),
     );
   }
