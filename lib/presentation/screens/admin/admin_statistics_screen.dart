@@ -1,11 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_chart.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/widgets.dart';
 
-class AdminStatisticsScreen extends StatelessWidget {
+class AdminStatisticsScreen extends StatefulWidget {
   const AdminStatisticsScreen({super.key});
+
+  @override
+  State<AdminStatisticsScreen> createState() => _AdminStatisticsScreenState();
+}
+
+class _AdminStatisticsScreenState extends State<AdminStatisticsScreen> {
+  late List<dynamic> examStatistics;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +26,8 @@ class AdminStatisticsScreen extends StatelessWidget {
               content: Text(state.message),
             ),
           );
+        } else if (state is StatisticsLoaded) {
+          examStatistics = state.statistics['examsArray'];
         }
       },
       builder: (context, state) {
@@ -25,7 +36,6 @@ class AdminStatisticsScreen extends StatelessWidget {
             child: AppLoadingAnimation(),
           );
         } else if (state is StatisticsLoaded) {
-          final List<dynamic> examStatistics = state.statistics['examsArray'];
           return SingleChildScrollView(
             child: Row(
               children: [
@@ -38,14 +48,75 @@ class AdminStatisticsScreen extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(40),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: examStatistics.length,
-                          itemBuilder: (context, index) {
-                            return ExamStatisticsCard(
-                              examStatistics: examStatistics[index],
-                            );
-                          },
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.cached,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      context.read<StatisticsBloc>().add(GetAdminStatisticsEvent());
+                                    },
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Container(
+                                    width: min(MediaQuery.of(context).size.width * 0.4, 240),
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          spreadRadius: 1,
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: TextField(
+                                      onChanged: (value) {
+                                        if (value.isNotEmpty) {
+                                          examStatistics = examStatistics.where((element) {
+                                            return element['exam_title'].toString().toLowerCase().contains(value.toLowerCase());
+                                          }).toList();
+                                        } else {
+                                          examStatistics = state.statistics['examsArray'];
+                                        }
+                                        setState(() {});
+                                      },
+                                      decoration: const InputDecoration(
+                                        icon: Padding(
+                                          padding: EdgeInsets.only(left: 16),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        hintText: 'Search exams',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: examStatistics.length,
+                              itemBuilder: (context, index) {
+                                return ExamStatisticsCard(
+                                  examStatistics: examStatistics[index],
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       )
                     ),
@@ -62,6 +133,13 @@ class AdminStatisticsScreen extends StatelessWidget {
       },
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<StatisticsBloc>().add(GetAdminStatisticsEvent());
+    examStatistics = [];
+  }
 }
 
 class ExamStatisticsCard extends StatelessWidget {
@@ -77,7 +155,7 @@ class ExamStatisticsCard extends StatelessWidget {
     final double completePercent = examStatistics['completePercent'] * 100 ?? 0;
     final double countUser = examStatistics['countUser'] ?? 0;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Card(
         child: ExpansionTile(
           leading: const Padding(
