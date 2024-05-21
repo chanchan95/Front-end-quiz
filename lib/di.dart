@@ -10,10 +10,13 @@ import 'package:ptit_quiz_frontend/domain/usecases/get_courses_admin.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/get_exam_result.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/get_exam_results.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/get_exams_admin.dart';
+import 'package:ptit_quiz_frontend/domain/usecases/get_result_long.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/get_users_profiles.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/otp_password.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/reset_password.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/submit_exam.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/long_result/long_result_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/long_result/long_result_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/course_cubit.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_courses_cubit.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/cubits/list_question.dart';
@@ -142,7 +145,12 @@ class DependencyInjection {
       () => StatisticsBloc(getAdminStatistics: sl()),
     );
 
+    sl.registerFactory<LongResultBloc>(
+      () => LongResultBloc(getResultLong: sl()),
+    );
+
     // use case
+    sl.registerLazySingleton<getResultLong>(() => getResultLong(examRepository: sl()));
     sl.registerLazySingleton<Login>(() => Login(authRepository: sl()));
     sl.registerLazySingleton<Logout>(() => Logout(authRepository: sl()));
     sl.registerLazySingleton<Register>(() => Register(authRepository: sl()));

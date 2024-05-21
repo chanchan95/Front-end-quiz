@@ -63,7 +63,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
       final response = await _createExam(event.exam);
       emit(ExamStateCreated(exam: response));
     } catch (e) {
-      emit(ExamStateError(message: e.toString()));
+      // emit(ExamStateError(message: e.toString()));
     }
   }
 

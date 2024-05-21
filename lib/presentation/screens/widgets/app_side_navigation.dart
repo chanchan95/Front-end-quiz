@@ -56,16 +56,16 @@ class _AppSideNavigationState extends State<AppSideNavigation> {
                           }
                         } else if (state is AuthStateAdminAuthenticated) {
                           switch (index) {
-                            case 0:
+                            case 1:
                               context.go(AppRoutes.adminCourse);
                               break;
-                            case 1:
+                            case 2:
                               context.go(AppRoutes.adminExam);
                               break;
-                            case 2:
+                            case 3:
                               context.go(AppRoutes.adminUser);
                               break;
-                            case 3:
+                            case 0:
                               context.go(AppRoutes.adminStatistics);
                               break;
                           }
@@ -93,7 +93,7 @@ class _AppSideNavigationState extends State<AppSideNavigation> {
                           if (state is AuthStateAuthenticated) {
                             context.go(AppRoutes.home);
                           } else if (state is AuthStateAdminAuthenticated) {
-                            context.go(AppRoutes.adminCourse);
+                            context.go(AppRoutes.adminStatistics);
                           }
                         },
                         child: Column(
@@ -128,6 +128,12 @@ class _AppSideNavigationState extends State<AppSideNavigation> {
                         ),
                       if (state is AuthStateAdminAuthenticated)
                         const NavigationRailDestination(
+                          icon: Icon(Icons.bar_chart_outlined),
+                          selectedIcon: Icon(Icons.bar_chart),
+                          label: Text('Dashboard'),
+                        ),
+                      if (state is AuthStateAdminAuthenticated)
+                        const NavigationRailDestination(
                           icon: Icon(Icons.school_outlined),
                           selectedIcon: Icon(Icons.school),
                           label: Text('Course'),
@@ -143,12 +149,6 @@ class _AppSideNavigationState extends State<AppSideNavigation> {
                           icon: Icon(Icons.person_outlined),
                           selectedIcon: Icon(Icons.person),
                           label: Text('Student'),
-                        ),
-                      if (state is AuthStateAdminAuthenticated)
-                        const NavigationRailDestination(
-                          icon: Icon(Icons.bar_chart_outlined),
-                          selectedIcon: Icon(Icons.bar_chart),
-                          label: Text('Statistics'),
                         ),
                       if (state is AuthStateUnauthenticated)
                         const NavigationRailDestination(

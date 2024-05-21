@@ -102,23 +102,41 @@ class _ExamScreenState extends State<ExamScreen> {
                                           () {
                                             Exam thisexam =
                                                 context.read<ExamCubit>().state;
-                                            List<Question> questions = context.read<ListQuestionCubit>().state;
+                                            if (thisexam.questions != null) {
+                                              for (var question
+                                                  in thisexam.questions!) {
+                                                context
+                                                    .read<ListQuestionCubit>()
+                                                    .addQuestion(question);
+                                              }
+                                            }
+                                            context.read<ExamBloc>().add(
+                                                  CreateExamEvent(
+                                                    exam: thisexam,
+                                                  ),
+                                                );
+                                            // Navigator.of(context).pop();
+                                            context.read<ExamBloc>().add(
+                                                FetchExamsAdminEvent(
+                                                    sortKey: sortKey,
+                                                    sortValue: sortOrder));
 
                                             if (thisexam.title.isEmpty) {
                                               toastification.show(
                                                 context: context,
                                                 type: ToastificationType.error,
-                                                style: ToastificationStyle.flatColored,
+                                                style: ToastificationStyle
+                                                    .flatColored,
                                                 title: const Text('Error'),
-                                                description: const Text('Title is required'),
+                                                description: const Text(
+                                                    'Title is required'),
                                                 alignment: Alignment.topRight,
-                                                autoCloseDuration: const Duration(seconds: 3),
+                                                autoCloseDuration:
+                                                    const Duration(seconds: 3),
                                                 showProgressBar: false,
                                               );
                                               return;
                                             }
-
-
                                           },
                                         );
                                         print('Add exam button pressed');

@@ -162,8 +162,10 @@ class _ExamDetailsTabState extends State<ExamDetailsTab> {
                   type: _typeController.text,
                   status: _statusController.text,
                   courseId: _idCourseController.text,
-                  // questions: context.read<ListQuestionCubit>().state,
+                  questions: context.read<ListQuestionCubit>().state,
                 );
+
+                print(thisExam.questions?.length ?? 0);
               },
             )
           ],
@@ -281,7 +283,7 @@ class QuestionDetailCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Stack(children: [
+        child: Stack(alignment: Alignment.topRight, children: [
           Column(
             children: [
               Text('Question'),
@@ -337,8 +339,11 @@ class QuestionDetailCard extends StatelessWidget {
             ],
           ),
           ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(120, 50),
+            ),
             label: Text('Done'),
-            icon: Icon(Icons.verified),
+            icon: Icon(Icons.verified_outlined),
             onPressed: () {
               Question thisQuestion = Question(
                 id: '',
@@ -356,6 +361,8 @@ class QuestionDetailCard extends StatelessWidget {
               context.read<ListQuestionCubit>().addQuestion(
                     thisQuestion,
                   );
+              print("ĐỘ DÀI CỦA LIST QUESTION");
+              print(context.read<ListQuestionCubit>().state.length);
             },
           ),
         ]),

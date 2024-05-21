@@ -63,12 +63,13 @@ class ResultScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             ...state.results.map((result) {
-                              return ResultCard(
-                                result: result,
-                                onViewDetail: () {
-                                  context.go('/result/${result['id']}');
-                                },
-                              );
+                              return Placeholder();
+                              // return ResultCard(
+                              //   result: result,
+                              //   onViewDetail: () {
+                              //     context.go('/result/${result['id']}');
+                              //   },
+                              // );
                             }),
                           ],
                         ),

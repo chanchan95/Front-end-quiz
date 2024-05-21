@@ -3,6 +3,7 @@ import 'package:ptit_quiz_frontend/data/models/profile_model.dart';
 import 'package:ptit_quiz_frontend/domain/entities/course.dart';
 import 'package:ptit_quiz_frontend/domain/entities/profile.dart';
 import 'package:ptit_quiz_frontend/domain/entities/question.dart';
+import 'package:ptit_quiz_frontend/domain/entities/result.dart';
 
 import '../models/exam_model.dart';
 import '../providers/remote_data.dart';
@@ -42,6 +43,11 @@ class ExamRepositoryImpl implements ExamRepository {
   @override
   Future<Exam> getExam(String id) async {
     return await remoteData.getExam(id);
+  }
+
+  @override
+  Future<List<Result>> getResults() async {
+    return await remoteData.getResults();
   }
 
   @override

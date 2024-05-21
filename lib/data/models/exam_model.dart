@@ -52,29 +52,20 @@ class ExamModel extends Exam {
 
   Map<String, dynamic> toJson() {
     return {
-
-    'record' :{
-          'title': title,
-          'description': description,
-          'type': type,
-          'totalPoint': totalPoint,
-          'course_id': courseId,
-          'status': status,
-          },
-
-    'questions': QuestionModel.toJsonList(QuestionModel.fromEntityList(questions)),
+      'record': {
+        'title': title,
+        'description': description,
+        'type': type,
+        'totalPoint': totalPoint,
+        'course_id': courseId,
+        'status': status,
+      },
+      'questions':
+            QuestionModel.toJsonList(QuestionModel.fromEntityList(questions))
+              
     };
   }
-//  [
-//   {
-//     "question_id": "661d48dac4946a01edd90710",
-//     "user_option": [2]
-//   },
-//   {
-//     "question_id": "661d48dac4946a01edd90715",
-//     "user_option": []
-//   }
-// ]
+
 
   factory ExamModel.fromEntity(Exam exam) {
     return ExamModel(
@@ -87,7 +78,7 @@ class ExamModel extends Exam {
       timeFinish: exam.timeFinish ?? null,
       courseId: exam.courseId,
       status: exam.status,
-      
+      questions: exam.questions,
     );
   }
 }

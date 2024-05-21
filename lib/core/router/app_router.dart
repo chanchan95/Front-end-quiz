@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/course_bloc/course_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/user/course_screen.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/user/result_long_sceen.dart';
 // import 'package:ptit_quiz_frontend/presentation/screens/auth/otp_password_screen.dart';
 
 import '../../presentation/screens/screen.dart';
@@ -36,7 +37,7 @@ class AppRouter {
               if (authState is AuthStateAuthenticated) {
                 return AppRoutes.home;
               } else if (authState is AuthStateAdminAuthenticated) {
-                return AppRoutes.adminCourse;
+                return AppRoutes.adminStatistics;
               }
             } else if (!AppRoutes.validRoutes.contains(state.matchedLocation) &&
                 !state.matchedLocation.startsWith(AppRoutes.exam) &&
@@ -91,7 +92,7 @@ class AppRouter {
                     buildCustomTransitionPage<void>(
                   context: context,
                   state: state,
-                  child: const ResultScreen(),
+                  child: LongResultScreen(),
                 ),
               ),
               GoRoute(
@@ -147,7 +148,7 @@ class AppRouter {
                   child: const AdminStatisticsScreen(),
                 ),
               ),
-              
+
               GoRoute(
                 path: AppRoutes.adminUser,
                 pageBuilder: (context, state) =>

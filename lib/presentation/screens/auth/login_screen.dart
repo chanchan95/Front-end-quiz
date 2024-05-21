@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state is AuthStateAuthenticated) {
                 context.go(AppRoutes.home);
               } else if (state is AuthStateAdminAuthenticated) {
-                context.go(AppRoutes.adminCourse);
+                context.go(AppRoutes.adminStatistics);
               }
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 toastification.show(

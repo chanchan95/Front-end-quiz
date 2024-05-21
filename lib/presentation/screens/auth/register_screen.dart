@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               if (state is AuthStateAuthenticated) {
                 context.go(AppRoutes.home);
               } else if (state is AuthStateAdminAuthenticated) {
-                context.go(AppRoutes.adminCourse);
+                context.go(AppRoutes.adminStatistics);
               }
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 toastification.show(

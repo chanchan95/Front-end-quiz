@@ -1,6 +1,7 @@
 import 'package:ptit_quiz_frontend/domain/entities/course.dart';
 import 'package:ptit_quiz_frontend/domain/entities/profile.dart';
 import 'package:ptit_quiz_frontend/domain/entities/question.dart';
+import 'package:ptit_quiz_frontend/domain/entities/result.dart';
 
 import '../entities/exam.dart';
 
@@ -9,6 +10,7 @@ abstract class ExamRepository {
   Future<Exam> updateExam(Exam exam);
   Future<Exam> deleteExam(String id);
   Future<List<Exam>> getExams(String sortKey, String sortValue);
+  Future<List<Result>> getResults();
   Future<List<Exam>> getExamsAdmin(String sortKey, String sortValue);
   Future<Exam> getExam(String id);
   // Future<Course> getCourse(String sortKey, String sortValue);  

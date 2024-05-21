@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:ptit_quiz_frontend/data/models/course_model.dart';
 import 'package:ptit_quiz_frontend/data/models/question_model.dart';
+import 'package:ptit_quiz_frontend/data/models/result_model.dart';
 import 'package:ptit_quiz_frontend/domain/entities/course.dart';
 import 'package:ptit_quiz_frontend/domain/entities/question.dart';
 import '../models/account_model.dart';
@@ -36,6 +37,7 @@ abstract class RemoteData {
   Future<List<ExamModel>> getExams(String sortKey, String sortValue);
   Future<List<ExamModel>> getExamsAdmin(String sortKey, String sortValue);
   Future<Exam> getExam(String id);
+  Future<List<ResultModel>> getResults();
 
   Future<Course> createCourse(CourseModel course);
   Future<List<CourseModel>> getCourses(String sortKey, String sortValue);
@@ -192,7 +194,8 @@ class RemoteDataImpl implements RemoteData {
 
   @override
   Future<ExamModel> createExam(ExamModel exam) async {
-    final response = await dio.post("/admin/exams", data: exam.toJson());
+    final response = await dio.post("/api/v1/admin/exams/create",
+        data: ExamModel.fromEntity(exam).toJson());
     switch (response.statusCode) {
       case 201:
         return ExamModel.fromJson(response.data);
@@ -304,6 +307,43 @@ class RemoteDataImpl implements RemoteData {
           response: response,
           message: jsonEncode(response.data),
         );
+    }
+  }
+
+  @override
+  Future<List<ResultModel>> getResults() async {
+    final response = await dio.get("/api/v1/users/result");
+    // switch (response.statusCode) {
+    //   case 200:
+    //     return (response.data as List)
+    //         .map((e) => ResultModel.fromJson(e))
+    //         .toList();
+    //   default:
+    //     throw DioException(
+    //       requestOptions: response.requestOptions,
+    //       response: response,
+    //       message: jsonEncode(response.data),
+    //     );
+    // }
+    if (response.statusCode == 200) {
+      print('first');
+      List<ResultModel> results = (response.data['result'] as List)
+          .map((e) => ResultModel.fromJson(e))
+          .toList();
+      // print all the results
+      print('second');
+      results.forEach((result) {
+        print(result.toJson());
+      });
+      return (response.data['result'] as List)
+          .map((e) => ResultModel.fromJson(e))
+          .toList();
+    } else {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        message: jsonEncode(response.data),
+      );
     }
   }
 
@@ -481,7 +521,6 @@ class RemoteDataImpl implements RemoteData {
         );
     }
   }
-
 
   @override
   Future<Map<String, dynamic>> getAdminStatistics() async {
