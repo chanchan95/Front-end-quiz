@@ -1,0 +1,51 @@
+name: Deploy Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      api-url:
+        description: 'api url'
+        default: 'https://quiz-management-sandy.vercel.app'
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build & Deploy
+    env:
+      API_URL: ${{ inputs.api-url }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.19.6
+    - name: Create dotenv file
+      run: echo "API_URL=${{ inputs.api-url }}" > dotenv
+    - run: flutter --version
+    - run: flutter pub get
+    - run: flutter build web --release --web-renderer html --base-href /quiz_web/
+    - run: |
+          cd build/web
+          git init
+          git config --global user.email trangtrang9503@gmail.com
+          git config --global user.name chanchan95
+          git status
+          git remote add origin https://${{ secrets.my_secret }}@github.com/chanchan95/quiz_web.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push origin gh-pages -f
+          cd ../..
+    - run: flutter build web --release --web-renderer html
+    - run: |
+          cd build/web
+          git checkout -b render-pages
+          git add --all
+          git commit -m "update"
+          git push origin render-pages -f
+
